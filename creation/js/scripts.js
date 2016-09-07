@@ -1,8 +1,8 @@
-$(document).ready(function() {
+﻿$(document).ready(function() {
 
 
 
-	// 高さ揃える
+	// 
 	var setPrt = $('#services .row'),
 	setChd = setPrt.find('>div');
 	function argHeight(){
@@ -297,54 +297,23 @@ $(document).ready(function() {
 	Contact Map
 	==============================================*/
 	function loadGmap(){
-
-	if($('#gmap').length){
-
-		var map;
-		var mapstyles = [ { "stylers": [ { "saturation": -100 } ] } ];
-
-		var infoWindow = new google.maps.InfoWindow;
-
-		var pointLatLng = new google.maps.LatLng(mapPoint.lat, mapPoint.lng);
-
-		var mapOptions = {
-			zoom: mapPoint.zoom,
-			center: pointLatLng,
-			zoomControl : true,
-			panControl : false,
-			streetViewControl : false,
-			mapTypeControl: false,
-			overviewMapControl: false,
-			scrollwheel: false,
-			styles: mapstyles
-		}
-
-		map = new google.maps.Map(document.getElementById("gmap"), mapOptions);
-
-		var marker = new google.maps.Marker({
-			position: pointLatLng,
-			map: map,
-			title:mapPoint.linkText,
-			icon: mapPoint.icon
-		});
-
-		var mapLink = 'https://www.google.com/maps/preview?ll='+mapPoint.lat+','+mapPoint.lng+'&z=14&q='+mapPoint.mapAddress;
-
-		var html = '<div class="infowin">'
-				+ mapPoint.infoText
-				+ '<a href="'+mapLink+'" target="_blank">'+mapPoint.linkText+'</a>'
-				+ '</div>';
-
-		google.maps.event.addListener(marker, 'mouseover', function() {
-			infoWindow.setContent(html);
-			infoWindow.open(map, marker);
-		});
-
-		google.maps.event.addListener(marker, 'click', function() {
-			window.open(mapLink,'_blank');
-		});
-
-	}
+			var map = new BMap.Map("allmap");                        // 创建Map实例
+					map.centerAndZoom(new BMap.Point(113.346913,23.176349), 16);     // 初始化地图,设置中心点坐标和地图级别
+					// map.centerAndZoom("广州", 15);     // 初始化地图,设置中心点坐标和地图级别
+					map.addControl(new BMap.NavigationControl());               // 添加平移缩放控件
+					map.addControl(new BMap.ScaleControl());                    // 添加比例尺控件
+					map.addControl(new BMap.OverviewMapControl());              //添加缩略地图控件
+					map.enableScrollWheelZoom();                            //启用滚轮放大缩小
+					map.addControl(new BMap.MapTypeControl());          //添加地图类型控件
+					map.setCurrentCity("广州");          // 设置地图显示的城市 此项是必须设置的
+					var marker1 = new BMap.Marker(new BMap.Point(113.346913,23.176349));  // 创建标注
+					map.addOverlay(marker1);              // 将标注添加到地图中
+					//创建信息窗口
+					var infoWindow1 = new BMap.InfoWindow("<strong>river·前端</strong><br>地址：广东省广州市天河区长兴路147号B4");
+					marker1.addEventListener("click", function () {
+						this.openInfoWindow(infoWindow1);
+					});
+					marker1.openInfoWindow(infoWindow1);
 	}
 	/*============================================
 	Waypoints Animations
